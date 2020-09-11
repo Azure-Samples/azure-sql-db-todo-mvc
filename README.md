@@ -79,7 +79,12 @@ Long story short (make sure you have installed all the prerequisites mentioned i
 
 ## Running on Azure
 
-This is the amazing part of using Azure Static WebApps. Deploying to Azure is as easy as committing to GitHub.
+This is the amazing part of using Azure Static WebApps. Deploying to Azure is completely automated via GitHub actions.
+
+1. Fork this repository 
+2. Open the Azure Portal
+3. Create a "Static Web App" resource and follow the instruction here: [Building your first static web app in the Azure portal](https://docs.microsoft.com/en-us/azure/static-web-apps/get-started-portal?tabs=vanilla-javascript), but
+  4. 
 
 
 
