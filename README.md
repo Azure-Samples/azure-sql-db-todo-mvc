@@ -11,16 +11,16 @@ The implementation uses
 - [NodeJS](https://nodejs.org/en/) for the back-end logic
 - [Azure SQL](https://azure.microsoft.com/en-us/services/sql-database/) as database to store ToDo data
 - [GitHub Actions](https://github.com/features/actions)
-
+- [JBoss EAP](https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.3/html/getting_started_with_jboss_eap_for_openshift_container_platform/introduction) as an example of running a traditional Java app server containerized
+ 
 ## Implementation Details
 
 Folder structure
 
 - `/api`: the NodeJs code used to provide the backend API, called by the Vue.Js client
 - `/client`: the Vue.Js client. Original source code has been taken from official Vue.js sample and adapted to call a REST client instead of using local storage in order to save and retrieve todos
+- `/traditional-appserver`: the config and code for the traditional app server.
 - `/database`: the T-SQL script needed to setup the object in the Azure SQL database. Take a look at the Stored Procedure to see how you can handle JSON right on Azure SQL
-
-More details are available in this blog post: [TodoMVC Full Stack with Azure Static Web Apps, Node and Azure SQL](https://devblogs.microsoft.com/azure-sql/todomvc-full-stack-with-azure-static-web-apps-node-and-azure-sql/)
 
 ## Setup Database
 
