@@ -2,6 +2,8 @@
 
 # OpenShift Examples - ARO WebApp with Azure SQL
 A demo reference to deploying webapps in Azure Red Hat OpenShift that talk to Azure SQL. 
+
+**PLEASE BE AWARE** - ARO + Azure SQL + Cosmos DB all running in HA mode can create large costs on your Azure bill.
 ## Implementation Details
 
 Folder structure:
@@ -10,18 +12,18 @@ Folder structure:
 - `/traditional-appserver`: the config and code for the traditional app server
 - `/database`: the scripts needed to setup the Azure SQL database
 - `/caching`: how to setup a caching service running in ARO
-  
+
 ## Setup Databases
 Assuming you have CLI access to your Azure account. Run the following commands to create a our databases for this example:
 
 1. Check the script in database/setupAzureSql.sh and tweak as desired
 2. Run `./database/setupAzureSql.sh`
 
-1. Check the script in database/setupCosmos.sh and tweak as desired
-2. Run `./database/setupCosmos.sh`
-3. Note the connection strings that are printed - you'll need the primary one later
+3. Check the script in database/setupCosmos.sh and tweak as desired
+4. Run `./database/setupCosmos.sh`
+5. Note the connection strings that are printed - you'll need the primary one later
 
-1. Now execute the `/database/create-todos.sql` script on your Azure SQL (use SQL Server Management Studio or Azure Data Studio to run the script)
+6. Now execute the `/database/create-todos.sql` script on your Azure SQL (use SQL Server Management Studio or Azure Data Studio to run the script)
 
 If you are completely new to Azure SQL and need a little more help, here's a full playlist that will help you: [Azure SQL for beginners](https://www.youtube.com/playlist?list=PLlrxD0HtieHi5c9-i_Dnxw9vxBY-TqaeN).
 

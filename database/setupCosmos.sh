@@ -5,16 +5,15 @@
 # Create a MongoDB API database and collection
 #
 #
-resource="rg-AroWebAppsExample"
+resource="rg-AroWebAppsExample1"
 
 uniqueId=$RANDOM
 resource="rg-AroWebAppsExample"
 location="East US"
-accountName="cosmos-arowebappsexample" #needs to be lower case
+accountName="cosmos-aromodernwebapps" #needs to be lower case
 serverVersion='3.6' #3.2 or 3.6
 database='highscores'
-collectionName='collection1'
-#collectionName='scores'
+collectionName='scores'
 
 # Create a resource group
 az group create --name $resource --location "$location"
@@ -34,22 +33,9 @@ az cosmosdb mongodb database create \
     -g $resource \
     -n $database
 
-# Define the index policy for the collection, include unique index and 30-day TTL
-idxpolicy=$(cat << EOF 
-[ 
-    {
-        "key": {"keys": ["user_id", "user_address"]}, 
-        "options": {"unique": "true"}
-    },
-    {
-        "key": {"keys": ["_ts"]},
-        "options": {"expireAfterSeconds": 2629746}
-    }
-]
-EOF
-)
-# Persist index policy to json file
-echo "$idxpolicy" > "idxpolicy-$uniqueId.json"
+# Azure Cosmos DB's API for MongoDB server version 3.6+ automatically indexes 
+# the _id field, which can't be dropped. It automatically enforces the uniqueness 
+# of the _id field per shard key.
 
 # Create a MongoDB API collection
 az cosmosdb mongodb collection create \
@@ -57,12 +43,7 @@ az cosmosdb mongodb collection create \
     -g $resource \
     -d $database \
     -n $collectionName \
-    --shard 'user_id' \
-    --throughput 400 \
-    --idx @idxpolicy-$uniqueId.json
-
-# Clean up temporary index policy file
-rm -f "idxpolicy-$uniqueId.json"
+    --shard '_id'
 
 echo "Your connection strings are:"
 az cosmosdb list-connection-strings -g $resource --name $accountName
