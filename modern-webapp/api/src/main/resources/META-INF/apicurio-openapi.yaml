@@ -1,0 +1,206 @@
+openapi: 3.0.2
+info:
+    title: High Scores
+    version: 1.0.0
+    description: >-
+        The High Scores API - submit new highscores, see who the top leaders are, get all data from the
+        leaderboard, etc.
+    contact:
+        url: 'https://github.com/dudash/openshift-highscores-api-service'
+    license:
+        name: Apache 2.0
+        url: 'https://www.apache.org/licenses/LICENSE-2.0'
+paths:
+    /configurations:
+        summary: Path used to manage the list of configurations.
+        description: >-
+            The REST endpoint/path used to list and create zero or more `configuration` entities.  This path
+            contains a `GET` and `POST` operation to perform the list and create tasks, respectively.
+        get:
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/configuration'
+                    description: Successful response - returns an array of `configuration` entities.
+            operationId: getconfigurations
+            summary: List All configurations
+            description: Gets a list of all `configuration` entities.
+        post:
+            requestBody:
+                description: A new `configuration` to be created.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/configuration'
+                required: true
+            responses:
+                '201':
+                    description: Successful response.
+            operationId: createconfiguration
+            summary: Create a configuration
+            description: Creates a new instance of a `configuration`.
+    '/configurations/{configurationId}':
+        summary: Path used to manage a single configuration.
+        description: >-
+            The REST endpoint/path used to get, update, and delete single instances of an `configuration`. 
+            This path contains `GET`, `PUT`, and `DELETE` operations used to perform the get, update, and
+            delete tasks, respectively.
+        get:
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/configuration'
+                    description: Successful response - returns a single `configuration`.
+            operationId: getconfiguration
+            summary: Get a configuration
+            description: Gets the details of a single instance of a `configuration`.
+        put:
+            requestBody:
+                description: Updated `configuration` information.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/configuration'
+                required: true
+            responses:
+                '202':
+                    description: Successful response.
+            operationId: updateconfiguration
+            summary: Update a configuration
+            description: Updates an existing `configuration`.
+        delete:
+            responses:
+                '204':
+                    description: Successful response.
+            operationId: deleteconfiguration
+            summary: Delete a configuration
+            description: Deletes an existing `configuration`.
+        parameters:
+            -
+                name: configurationId
+                description: A unique identifier for a `configuration`.
+                schema:
+                    type: string
+                in: path
+                required: true
+    /scores:
+        summary: Path used to manage the list of scores.
+        description: >-
+            The REST endpoint/path used to list and create zero or more `score` entities.  This path contains
+            a `GET` and `POST` operation to perform the list and create tasks, respectively.
+        get:
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/score'
+                    description: Successful response - returns an array of `score` entities.
+            operationId: getscores
+            summary: List all scores
+            description: Gets a list of all `score` entities.
+        post:
+            requestBody:
+                description: A new `score` to be created.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/score'
+                required: true
+            responses:
+                '201':
+                    description: Successful response.
+            operationId: createscore
+            summary: Create a score
+            description: Creates a new instance of a `score`.
+    '/scores/{scoreId}':
+        summary: Path used to manage a single score.
+        description: >-
+            The REST endpoint/path used to get, update, and delete single instances of an `score`.  This path
+            contains `GET`, `PUT`, and `DELETE` operations used to perform the get, update, and delete tasks,
+            respectively.
+        get:
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/score'
+                    description: Successful response - returns a single `score`.
+            operationId: getscore
+            summary: Get a score
+            description: Gets the details of a single instance of a `score`.
+        delete:
+            responses:
+                '204':
+                    description: Successful response.
+            operationId: deletescore
+            summary: Delete a score
+            description: Deletes an existing `score`.
+        parameters:
+            -
+                name: scoreId
+                description: A unique identifier for a `score`.
+                schema:
+                    type: string
+                in: path
+                required: true
+components:
+    schemas:
+        configuration:
+            title: Root Type for configuration
+            description: >-
+                Configuration details for the leader board (currently we just serve 1 leaderboard per API
+                server).
+            type: object
+            properties:
+                display-name:
+                    type: string
+                icon-image-uri:
+                    type: string
+                theme-identifier:
+                    type: string
+                smaller-is-better:
+                    type: boolean
+                creation-date:
+                    format: date-time
+                    type: string
+                autoreset:
+                    type: boolean
+                autoreset-date:
+                    format: date-time
+                    type: string
+                configuration-id:
+                    type: string
+            example:
+                configuration-id: '0'
+                display-name: Your Game Leaders
+                icon-image-uri: 'http://path/to/image.png'
+                theme-identifier: none
+                smaller-is-better: false
+                creation-date: '2017-07-21T17:32:28Z'
+                autoreset: false
+                autoreset-date: '2018-07-21T17:32:28Z'
+        score:
+            title: Root Type for score
+            description: 'Wow, what a great score!'
+            type: object
+            properties:
+                name:
+                    description: The player's initials or name
+                    type: string
+                score:
+                    format: int32
+                    description: A numeric score
+                    type: integer
+            example:
+                name: SED
+                score: 2023

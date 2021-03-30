@@ -1,0 +1,180 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "mssql2019",
+        "annotations": {
+            "openshift.io/display-name": "Microsoft SQL Server 2019",
+            "description": "Relational database management system developed by Microsoft."
+        }
+    },
+    "objects": [
+        {
+            "kind": "Secret",
+            "apiVersion": "v1",
+            "stringData": {
+                "SA_PASSWORD": "${SA_PASSWORD}",
+                "SERVICE_NAME": "${NAME}"
+            },
+            "metadata": {
+                "name": "${NAME}-secret"
+            }
+        },
+        {
+            "kind": "Service",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${NAME}",
+                "annotations": {
+                    "description": "Exposes the server"
+                }
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "name": "tcp",
+                        "port": 1433,
+                        "targetPort": 1433
+                    }
+                ],
+                "selector": {
+                    "name": "${NAME}"
+                }
+            }
+        },
+        {
+            "kind": "DeploymentConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${NAME}",
+                "annotations": {
+                    "description": "Defines how to deploy the database server"
+                }
+            },
+            "spec": {
+                "strategy": {
+                    "type": "Recreate"
+                },
+                "replicas": 1,
+                "selector": {
+                    "name": "${NAME}"
+                },
+                "template": {
+                    "metadata": {
+                        "name": "${NAME}",
+                        "labels": {
+                            "name": "${NAME}"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "name": "db",
+                                "image": "mcr.microsoft.com/mssql/rhel/server:2019-latest",
+                                "ports": [
+                                    {
+                                        "containerPort": 1433
+                                    }
+                                ],
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/var/opt/mssql",
+                                        "name": "mssql-data"
+                                    }
+                                ],
+                                "env": [
+                                    {
+                                        "name": "ACCEPT_EULA",
+                                        "value": "${ACCEPT_EULA}"
+                                    },
+                                    {
+                                        "name": "MSSQL_PID",
+                                        "value": "${MSSQL_PID}"
+                                    },
+                                    {
+                                        "name": "SA_PASSWORD",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "name": "${NAME}-secret",
+                                                "key": "SA_PASSWORD"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "MSSQL_SERVICE",
+                                        "valueFrom": {
+                                            "secretKeyRef": {
+                                                "name": "${NAME}-secret",
+                                                "key": "SERVICE_NAME"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "volumes": [
+                            {
+                                "name": "mssql-data",
+                                "persistentVolumeClaim": {
+                                    "claimName": "${NAME}-pvc"
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "kind": "PersistentVolumeClaim",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${NAME}-pvc"
+            },
+            "spec": {
+                "accessModes": [
+                    "ReadWriteOnce"
+                ],
+                "resources": {
+                    "requests": {
+                        "storage": "${VOLUME_CAPACITY}"
+                    }
+                }
+            }
+        }
+    ],
+    "parameters": [
+        {
+            "name": "NAME",
+            "displayName": "Name",
+            "description": "The name assigned to all of the frontend objects defined in this template.",
+            "required": true,
+            "value": "mssql"
+        },
+        {
+            "name": "SA_PASSWORD",
+            "displayName": "Administrator Password",
+            "generate": "expression",
+            "from": "aA1[a-zA-Z0-9]{8}"
+        },
+        {
+            "name": "ACCEPT_EULA",
+            "displayName": "Accept the End-User Licensing Agreement",
+            "description": "'Y' to accept the EULA (https://go.microsoft.com/fwlink/?linkid=857698).",
+            "required": true
+        },
+        {
+            "name": "MSSQL_PID",
+            "displayName": "Product ID or Edition",
+            "description": "Set to 'Developer'/'Express'/'Standard'/'Enterprise'/'EnterpriseCore'.",
+            "required": true,
+            "value": "Developer"
+        },
+        {
+            "name": "VOLUME_CAPACITY",
+            "displayName": "Persistent Volume Capacity",
+            "description": "Volume space available for data, e.g. 512Mi, 8Gi",
+            "value": "512Mi",
+            "required": true
+        }
+    ]
+}

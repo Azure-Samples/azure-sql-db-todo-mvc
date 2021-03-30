@@ -1,0 +1,1420 @@
+#######
+# READ ABOUT HOW THIS IS USED HERE:
+# https://quarkus.io/guides/config#list-of-all-configuration-properties
+#######
+#
+# The name of the application.
+# If not set, defaults to the name of the project (except for tests where it is not set at all).
+#
+quarkus.application.name=null
+
+#
+# The version of the application.
+# If not set, defaults to the version of the project (except for tests where it is not set at all).
+#
+quarkus.application.version=null
+
+#
+# If set to true '@Inject' is automatically added to all non-static fields that are annotated with
+# one of the annotations defined by {@link AutoInjectAnnotationBuildItem}.
+#
+quarkus.arc.auto-inject-fields=true
+
+#
+# If set to true, Arc will transform the bytecode of beans containing methods that need to be proxyable
+# but have been declared as final. The transformation is simply a matter of removing final.
+# This ensures that a proxy can be created properly.
+# If the value is set to false, then an exception is thrown at build time indicating
+# that a proxy could not be created because a method was final.
+#
+quarkus.arc.remove-final-for-proxyable-methods=true
+
+#
+# 
+#  - If set to `all` (or `true`) the container will attempt to remove all unused beans.
+#  - If set to none (or `false`) no beans will ever be removed even if they are unused (according to the criteria set out
+# below)
+#  - If set to `fwk`, then all unused beans will be removed, except the unused beans whose classes are declared in the
+# application code
+# 
+# <br>
+#
+# An unused bean:
+# 
+#  - is not a built-in bean or interceptor,
+#  - is not eligible for injection to any injection point,
+#  - is not excluded by any extension,
+#  - does not have a name,
+#  - does not declare an observer,
+#  - does not declare any producer which is eligible for injection to any injection point,
+#  - is not directly eligible for injection into any {@link javax.enterprise.inject.Instance} injection point
+# 
+# </p>
+#
+# @see UnremovableBeanBuildItem
+#
+quarkus.arc.remove-unused-beans=all
+
+#
+# If set to a directory, all generated classes will be written into that directory
+#
+quarkus.debug.generated-classes-dir=null
+
+#
+# If set to true, writes a list of all reflective classes to META-INF
+#
+quarkus.debug.reflection=false
+
+#
+# Whether or not extensions published health check should be enabled.
+#
+quarkus.health.extensions.enabled=true
+
+#
+# If basic auth should be enabled. If both basic and form auth is enabled then basic auth will be enabled in silent mode.
+#
+# If no authentication mechanisms are configured basic auth is the default, unless an
+# {@link io.quarkus.security.identity.IdentityProvider}
+# is present that supports {@link io.quarkus.security.identity.request.TokenAuthenticationRequest} in which case
+# form auth will be the default.
+#
+quarkus.http.auth.basic=false
+
+#
+# The cookie that is used to store the persistent session
+#
+quarkus.http.auth.form.cookie-name=quarkus-credential
+
+#
+# If form authentication is enabled
+#
+quarkus.http.auth.form.enabled=false
+
+#
+# The error page
+#
+quarkus.http.auth.form.error-page=/error.html
+
+#
+# The landing page to redirect to if there is no saved page to redirect back to
+#
+quarkus.http.auth.form.landing-page=/index.html
+
+#
+# The login page
+#
+quarkus.http.auth.form.login-page=/login.html
+
+#
+# How old a cookie can get before it will be replaced with a new cookie with an updated timeout.
+#
+# Not that smaller values will result in slightly more server load (as new encrypted cookies will be
+# generated more often), however larger values affect the inactivity timeout as the timeout is set
+# when a cookie is generated.
+#
+# For example if this is set to 10 minutes, and the inactivity timeout is 30m, if a users last request
+# is when the cookie is 9m old then the actual timeout will happen 21m after the last request, as the timeout
+# is only refreshed when a new cookie is generated.
+#
+quarkus.http.auth.form.new-cookie-interval=PT1M
+
+#
+# Option to disable redirect to landingPage if there is no saved page to redirect back to. Form Auth POST is followed
+# by redirect to landingPage by default.
+#
+quarkus.http.auth.form.redirect-after-login=true
+
+#
+# The inactivity timeout
+#
+quarkus.http.auth.form.timeout=PT30M
+
+#
+# The methods that this permission set applies to. If this is not set then they apply to all methods.
+#
+# Note that if a request matches any path from any permission set, but does not match the constraint
+# due to the method not being listed then the request will be denied.
+#
+# Method specific permissions take precedence over matches that do not have any methods set.
+#
+# This means that for example if Quarkus is configured to allow GET and POST requests to /admin to
+# and no other permissions are configured PUT requests to /admin will be denied.
+#
+quarkus.http.auth.permission.*.methods=null
+
+#
+# The paths that this permission check applies to. If the path ends in /* then this is treated
+# as a path prefix, otherwise it is treated as an exact match.
+#
+# Matches are done on a length basis, so the most specific path match takes precedence.
+#
+# If multiple permission sets match the same path then explicit methods matches take precedence
+# over over matches without methods set, otherwise the most restrictive permissions are applied.
+#
+quarkus.http.auth.permission.*.paths=null
+
+#
+# The HTTP policy that this permission set is linked to.
+#
+# There are 3 built in policies: permit, deny and authenticated. Role based
+# policies can be defined, and extensions can add their own policies.
+#
+quarkus.http.auth.permission.*.policy=null
+
+#
+# The roles that are allowed to access resources protected by this policy
+#
+quarkus.http.auth.policy.*.roles-allowed=null
+
+#
+# The authentication realm
+#
+quarkus.http.auth.realm=Quarkus
+
+#
+# The encryption key that is used to store persistent logins (e.g. for form auth). Logins are stored in a persistent
+# cookie that is encrypted with AES-256 using a key derived from a SHA-256 hash of the key that is provided here.
+#
+# If no key is provided then an in-memory one will be generated, this will change on every restart though so it
+# is not suitable for production environments. This must be more than 16 characters long for security reasons
+#
+quarkus.http.auth.session.encryption-key=null
+
+#
+# Whether the uploaded files should be removed after serving the request.
+#
+# If 'true' the uploaded files stored in 'quarkus.http.body-handler.uploads-directory' will be removed
+# after handling the request. Otherwise the files will be left there forever.
+#
+quarkus.http.body.delete-uploaded-files-on-end=false
+
+#
+# Whether the files sent using 'multipart/form-data' will be stored locally.
+#
+# If 'true', they will be stored in 'quarkus.http.body-handler.uploads-directory' and will be made
+# available via 'io.vertx.ext.web.RoutingContext.fileUploads()'. Otherwise, the the files sent using
+# 'multipart/form-data' will not be stored locally, and 'io.vertx.ext.web.RoutingContext.fileUploads()'
+# will always return an empty collection. Note that even with this option being set to 'false', the
+# 'multipart/form-data' requests will be accepted.
+#
+quarkus.http.body.handle-file-uploads=true
+
+#
+# Whether the form attributes should be added to the request parameters.
+#
+# If 'true', the form attributes will be added to the request parameters; otherwise the form parameters will
+# not be added to the request parameters
+#
+quarkus.http.body.merge-form-attributes=true
+
+#
+# Whether the body buffer should pre-allocated based on the 'Content-Length' header value.
+#
+# If 'true' the body buffer is pre-allocated according to the size read from the 'Content-Length'
+# header. Otherwise the body buffer is pre-allocated to 1KB, and is resized dynamically
+#
+quarkus.http.body.preallocate-body-buffer=false
+
+#
+# The directory where the files sent using 'multipart/form-data' should be stored.
+#
+# Either an absolute path or a path relative to the current directory of the application process.
+#
+quarkus.http.body.uploads-directory=file-uploads
+
+#
+# Enable the CORS filter.
+#
+quarkus.http.cors=false
+
+#
+# The `Access-Control-Max-Age` response header value indicating
+# how long the results of a pre-flight request can be cached.
+#
+quarkus.http.cors.access-control-max-age=null
+
+#
+# HTTP headers exposed in CORS
+#
+# Comma separated list of valid headers. ex: X-Custom,Content-Disposition
+#
+# default: empty
+#
+quarkus.http.cors.exposed-headers=null
+
+#
+# HTTP headers allowed for CORS
+#
+# Comma separated list of valid headers. ex: X-Custom,Content-Disposition
+# The filter allows any header if this is not set.
+#
+# default: returns any requested header as valid
+#
+quarkus.http.cors.headers=null
+
+#
+# HTTP methods allowed for CORS
+#
+# Comma separated list of valid methods. ex: GET,PUT,POST
+# The filter allows any method if this is not set.
+#
+# default: returns any requested method as valid
+#
+quarkus.http.cors.methods=null
+
+#
+# Origins allowed for CORS
+#
+# Comma separated list of valid URLs. ex: http://www.quarkus.io,http://localhost:3000
+# The filter allows any origin if this is not set.
+#
+# default: returns any requested origin as valid
+#
+quarkus.http.cors.origins=null
+
+#
+# The HTTP host
+#
+quarkus.http.host=0.0.0.0
+
+#
+# Http connection idle timeout
+#
+quarkus.http.idle-timeout=30M
+
+#
+# The number if IO threads used to perform IO. This will be automatically set to a reasonable value based on
+# the number of CPU cores if it is not provided. If this is set to a higher value than the number of Vert.x event
+# loops then it will be capped at the number of event loops.
+#
+# In general this should be controlled by setting quarkus.vertx.event-loops-pool-size, this setting should only
+# be used if you want to limit the number of HTTP io threads to a smaller number than the total number of IO threads.
+#
+quarkus.http.io-threads=null
+
+#
+# The maximum size of a request body.
+# Default: no limit.
+#
+quarkus.http.limits.max-body-size=null
+
+#
+# The the maximum length of all headers.
+#
+quarkus.http.limits.max-header-size=20K
+
+#
+# The HTTP port
+#
+quarkus.http.port=8080
+
+#
+# The HTTP root path. All web content will be served relative to this root path.
+#
+quarkus.http.root-path=/
+
+#
+# The HTTPS port
+#
+quarkus.http.ssl-port=8443
+
+#
+# The file path to a server certificate or certificate chain in PEM format.
+#
+quarkus.http.ssl.certificate.file=null
+
+#
+# The file path to the corresponding certificate private key file in PEM format.
+#
+quarkus.http.ssl.certificate.key-file=null
+
+#
+# An optional key store which holds the certificate information instead of specifying separate files.
+#
+quarkus.http.ssl.certificate.key-store-file=null
+
+#
+# An optional parameter to specify type of the key store file. If not given, the type is automatically detected
+# based on the file name.
+#
+quarkus.http.ssl.certificate.key-store-file-type=null
+
+#
+# A parameter to specify the password of the key store file. If not given, the default ("password") is used.
+#
+quarkus.http.ssl.certificate.key-store-password=password
+
+#
+# An optional trust store which holds the certificate information of the certificates to trust
+#
+quarkus.http.ssl.certificate.trust-store-file=null
+
+#
+# An optional parameter to specify type of the trust store file. If not given, the type is automatically detected
+# based on the file name.
+#
+quarkus.http.ssl.certificate.trust-store-file-type=null
+
+#
+# A parameter to specify the password of the trust store file.
+#
+quarkus.http.ssl.certificate.trust-store-password=null
+
+#
+# The cipher suites to use. If none is given, a reasonable default is selected.
+#
+quarkus.http.ssl.cipher-suites=null
+
+#
+# Configures the engine to require/request client authentication.
+# NONE, REQUEST, REQUIRED
+#
+quarkus.http.ssl.client-auth=NONE
+
+#
+# The list of protocols to explicitly enable.
+#
+quarkus.http.ssl.protocols=TLSv1.3,TLSv1.2
+
+#
+# The HTTP port used to run tests
+#
+quarkus.http.test-port=8081
+
+#
+# The HTTPS port used to run tests
+#
+quarkus.http.test-ssl-port=8444
+
+#
+# If this is true then only a virtual channel will be set up for vertx web.
+# We have this switch for testing purposes.
+#
+quarkus.http.virtual=false
+
+#
+# The maven artifactId of the artifact to index
+#
+quarkus.index-dependency.*.artifact-id=null
+
+#
+# The maven classifier of the artifact to index
+#
+quarkus.index-dependency.*.classifier=null
+
+#
+# The maven groupId of the artifact to index
+#
+quarkus.index-dependency.*.group-id=null
+
+#
+# Enable JNI support.
+#
+quarkus.jni.enable=false
+
+#
+# Paths of library to load.
+#
+quarkus.jni.library-paths=null
+
+#
+# Password used to use to connect to the remote dev-mode application
+#
+quarkus.live-reload.password=null
+
+#
+# URL used to use to connect to the remote dev-mode application
+#
+quarkus.live-reload.url=null
+
+#
+# The log level level for this category
+#
+quarkus.log.category.*.level=inherit
+
+#
+# Indicates whether to log asynchronously
+#
+quarkus.log.console.async=false
+
+#
+# Determine whether to block the publisher (rather than drop the message) when the queue is full
+#
+quarkus.log.console.async.overflow=block
+
+#
+# The queue length to use before flushing writing
+#
+quarkus.log.console.async.queue-length=512
+
+#
+# If the console logging should be in color. If undefined quarkus takes
+# best guess based on operating system and environment.
+# Note that this value will be ignored if an extension is present that takes
+# control of console formatting (e.g. an XML or JSON-format extension).
+#
+quarkus.log.console.color=null
+
+#
+# Specify how much the colors should be darkened.
+# Note that this value will be ignored if an extension is present that takes
+# control of console formatting (e.g. an XML or JSON-format extension).
+#
+quarkus.log.console.darken=0
+
+#
+# If console logging should be enabled
+#
+quarkus.log.console.enable=true
+
+#
+# The log format. Note that this value will be ignored if an extension is present that takes
+# control of console formatting (e.g. an XML or JSON-format extension).
+#
+quarkus.log.console.format=%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{3.}] (%t) %s%e%n
+
+#
+# The console log level.
+#
+quarkus.log.console.level=ALL
+
+#
+# Indicates whether to log asynchronously
+#
+quarkus.log.file.async=false
+
+#
+# Determine whether to block the publisher (rather than drop the message) when the queue is full
+#
+quarkus.log.file.async.overflow=block
+
+#
+# The queue length to use before flushing writing
+#
+quarkus.log.file.async.queue-length=512
+
+#
+# If file logging should be enabled
+#
+quarkus.log.file.enable=false
+
+#
+# The log format
+#
+quarkus.log.file.format=%d{yyyy-MM-dd HH:mm:ss,SSS} %h %N[%i] %-5p [%c{3.}] (%t) %s%e%n
+
+#
+# The level of logs to be written into the file.
+#
+quarkus.log.file.level=ALL
+
+#
+# The name of the file in which logs will be written.
+#
+quarkus.log.file.path=quarkus.log
+
+#
+# File handler rotation file suffix.
+#
+# Example fileSuffix: .yyyy-MM-dd
+#
+quarkus.log.file.rotation.file-suffix=null
+
+#
+# The maximum number of backups to keep.
+#
+quarkus.log.file.rotation.max-backup-index=1
+
+#
+# The maximum file size of the log file after which a rotation is executed.
+#
+quarkus.log.file.rotation.max-file-size=null
+
+#
+# Indicates whether to rotate log files on server initialization.
+#
+quarkus.log.file.rotation.rotate-on-boot=true
+
+#
+# The message starts to match
+#
+quarkus.log.filter.*.if-starts-with=inherit
+
+#
+# The default log level
+#
+quarkus.log.level=null
+
+#
+# The default minimum log level
+#
+quarkus.log.min-level=INFO
+
+#
+# The app name used when formatting the message in RFC5424 format
+#
+quarkus.log.syslog.app-name=null
+
+#
+# Indicates whether to log asynchronously
+#
+quarkus.log.syslog.async=false
+
+#
+# Determine whether to block the publisher (rather than drop the message) when the queue is full
+#
+quarkus.log.syslog.async.overflow=block
+
+#
+# The queue length to use before flushing writing
+#
+quarkus.log.syslog.async.queue-length=512
+
+#
+# Enables or disables blocking when attempting to reconnect a
+# {@link org.jboss.logmanager.handlers.SyslogHandler.Protocol#TCP
+# TCP} or {@link org.jboss.logmanager.handlers.SyslogHandler.Protocol#SSL_TCP SSL TCP} protocol
+#
+quarkus.log.syslog.block-on-reconnect=false
+
+#
+# If syslog logging should be enabled
+#
+quarkus.log.syslog.enable=false
+
+#
+# The IP address and port of the syslog server
+#
+quarkus.log.syslog.endpoint=localhost:514
+
+#
+# Sets the facility used when calculating the priority of the message as defined by RFC-5424 and RFC-3164
+#
+quarkus.log.syslog.facility=user-level
+
+#
+# The log message format
+#
+quarkus.log.syslog.format=%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{3.}] (%t) %s%e%n
+
+#
+# The name of the host the messages are being sent from
+#
+quarkus.log.syslog.hostname=null
+
+#
+# The log level specifying, which message levels will be logged by syslog logger
+#
+quarkus.log.syslog.level=ALL
+
+#
+# Sets the protocol used to connect to the syslog server
+#
+quarkus.log.syslog.protocol=tcp
+
+#
+# Set the {@link SyslogType syslog type} this handler should use to format the message sent
+#
+quarkus.log.syslog.syslog-type=rfc5424
+
+#
+# Set to 'true' if the message should be truncated
+#
+quarkus.log.syslog.truncate=true
+
+#
+# Set to 'true' if the message being sent should be prefixed with the size of the message
+#
+quarkus.log.syslog.use-counting-framing=false
+
+#
+# Configures the application name.
+#
+quarkus.mongodb.application-name=null
+
+#
+# How long a connection can take to be opened before timing out.
+#
+quarkus.mongodb.connect-timeout=null
+
+#
+# Configures the connection string.
+# The format is:
+# ' mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database.collection][?options]]'
+#
+# 'mongodb://' is a required prefix to identify that this is a string in the standard connection format.
+#
+# 'username:password@' are optional. If given, the driver will attempt to login to a database after
+# connecting to a database server. For some authentication mechanisms, only the username is specified and the
+# password is not, in which case the ":" after the username is left off as well.
+#
+# 'host1' is the only required part of the connection string. It identifies a server address to connect to.
+#
+# ':portX' is optional and defaults to :27017 if not provided.
+#
+# '/database' is the name of the database to login to and thus is only relevant if the
+# 'username:password@' syntax is used. If not specified the 'admin' database will be used by default.
+#
+# '?options' are connection options. Note that if 'database' is absent there is still a '/'
+# required between the last host and the '?' introducing the options. Options are name=value pairs and the
+# pairs are separated by "&amp;".
+#
+# An alternative format, using the 'mongodb+srv' protocol, is:
+#
+# <pre>
+# mongodb+srv://[username:password@]host[/[database][?options]]
+# </pre>
+# 
+#  - 'mongodb+srv://' is a required prefix for this format.
+#  - 'username:password@' are optional. If given, the driver will attempt to login to a database after
+# connecting to a database server. For some authentication mechanisms, only the username is specified and the
+# password is not, in which case the ":" after the username is left off as well
+#  - 'host' is the only required part of the URI. It identifies a single host name for which SRV records
+# are looked up from a Domain Name Server after prefixing the host name with '"_mongodb._tcp"'. The
+# host/port for each SRV record becomes the seed list used to connect, as if each one were provided as host/port
+# pair in a URI using the normal mongodb protocol.
+#  - '/database' is the name of the database to login to and thus is only relevant if the
+# 'username:password@' syntax is used. If not specified the "admin" database will be used by default.
+#  - '?options' are connection options. Note that if 'database' is absent there is still a '/'
+# required between the last host and the '?' introducing the options. Options are name=value pairs and the
+# pairs are separated by "&amp;". Additionally with the mongodb+srv protocol, TXT records are looked up from a
+# Domain Name Server for the given host, and the text value of each one is prepended to any options on the URI
+# itself. Because the last specified value for any option wins, that means that options provided on the URI will
+# override any that are provided via TXT records.
+# 
+#
+quarkus.mongodb.connection-string=null
+
+#
+# Configures the authentication mechanism to use if a credential was supplied.
+# The default is unspecified, in which case the client will pick the most secure mechanism available based on the
+# sever version. For the GSSAPI and MONGODB-X509 mechanisms, no password is accepted, only the username.
+# Supported values: 'MONGO-CR|GSSAPI|PLAIN|MONGODB-X509'
+#
+quarkus.mongodb.credentials.auth-mechanism=null
+
+#
+# Allows passing authentication mechanism properties.
+#
+quarkus.mongodb.credentials.auth-mechanism-properties.*=null
+
+#
+# Configures the source of the authentication credentials.
+# This is typically the database that the credentials have been created. The value defaults to the database
+# specified in the path portion of the connection string or in the 'database' configuration property..
+# If the database is specified in neither place, the default value is 'admin'. This option is only
+# respected when using the MONGO-CR mechanism (the default).
+#
+quarkus.mongodb.credentials.auth-source=null
+
+#
+# Configures the password.
+#
+quarkus.mongodb.credentials.password=null
+
+#
+# Configures the username.
+#
+quarkus.mongodb.credentials.username=null
+
+#
+# Configure the database name.
+#
+quarkus.mongodb.database=null
+
+#
+# Whether or not an health check is published in case the smallrye-health extension is present.
+#
+quarkus.mongodb.health.enabled=true
+
+#
+# The frequency that the driver will attempt to determine the current state of each server in the cluster.
+#
+quarkus.mongodb.heartbeat-frequency=null
+
+#
+# Configures the MongoDB server addressed (one if single mode).
+# The addresses are passed as 'host:port'.
+#
+quarkus.mongodb.hosts=127.0.0.1:27017
+
+#
+# When choosing among multiple MongoDB servers to send a request, the driver will only send that request to a
+# server whose ping time is less than or equal to the server with the fastest ping time plus the local threshold.
+#
+quarkus.mongodb.local-threshold=null
+
+#
+# Configures the time period between runs of the maintenance job.
+#
+quarkus.mongodb.maintenance-frequency=null
+
+#
+# Configures period of time to wait before running the first maintenance job on the connection pool.
+#
+quarkus.mongodb.maintenance-initial-delay=null
+
+#
+# Maximum idle time of a pooled connection. A connection that exceeds this limit will be closed.
+#
+quarkus.mongodb.max-connection-idle-time=null
+
+#
+# Maximum life time of a pooled connection. A connection that exceeds this limit will be closed.
+#
+quarkus.mongodb.max-connection-life-time=null
+
+#
+# Configures the maximum number of connections in the connection pool.
+#
+quarkus.mongodb.max-pool-size=null
+
+#
+# Configures the maximum number of concurrent operations allowed to wait for a server to become available.
+# All further operations will get an exception immediately.
+#
+quarkus.mongodb.max-wait-queue-size=null
+
+#
+# Configures the minimum number of connections in the connection pool.
+#
+quarkus.mongodb.min-pool-size=null
+
+#
+# Configures the read preferences.
+# Supported values are: 'primary|primaryPreferred|secondary|secondaryPreferred|nearest'
+#
+quarkus.mongodb.read-preference=null
+
+#
+# Implies that the hosts given are a seed list, and the driver will attempt to find all members of the set.
+#
+quarkus.mongodb.replica-set-name=null
+
+#
+# How long the driver will wait for server selection to succeed before throwing an exception.
+#
+quarkus.mongodb.server-selection-timeout=null
+
+#
+# How long a send or receive on a socket can take before timing out.
+#
+quarkus.mongodb.socket-timeout=null
+
+#
+# Whether to connect using TLS.
+#
+quarkus.mongodb.tls=false
+
+#
+# If connecting with TLS, this option enables insecure TLS connections.
+#
+quarkus.mongodb.tls-insecure=false
+
+#
+# This multiplier, multiplied with the 'maxPoolSize' setting, gives the maximum number of
+# threads that may be waiting for a connection to become available from the pool. All further threads will get an
+# exception right away.
+#
+quarkus.mongodb.wait-queue-multiple=null
+
+#
+# The maximum wait time that a thread may wait for a connection to become available.
+#
+quarkus.mongodb.wait-queue-timeout=null
+
+#
+# Configures the journal writing aspect.
+# If set to 'true': the driver waits for the server to group commit to the journal file on disk.
+# If set to 'false': the driver does not wait for the server to group commit to the journal file on disk.
+#
+quarkus.mongodb.write-concern.journal=true
+
+#
+# If set to 'true', the driver will retry supported write operations if they fail due to a network error.
+#
+quarkus.mongodb.write-concern.retry-writes=false
+
+#
+# Configures the safety.
+# If set to 'true': the driver ensures that all writes are acknowledged by the MongoDB server, or else
+# throws an exception. (see also 'w' and 'wtimeoutMS').
+# If set fo
+#  - 'false': the driver does not ensure that all writes are acknowledged by the MongoDB server.
+#
+quarkus.mongodb.write-concern.safe=true
+
+#
+# When set, the driver adds 'w: wValue' to all write commands. It requires 'safe' to be 'true'.
+# The value is typically a number, but can also be the 'majority' string.
+#
+quarkus.mongodb.write-concern.w=null
+
+#
+# When set, the driver adds 'wtimeout : ms ' to all write commands. It requires 'safe' to be
+# 'true'.
+#
+quarkus.mongodb.write-concern.w-timeout=null
+
+#
+# If all character sets should be added to the native image. This increases image size
+#
+quarkus.native.add-all-charsets=false
+
+#
+# Additional arguments to pass to the build process
+#
+quarkus.native.additional-build-args=null
+
+#
+# If all META-INF/services entries should be automatically registered
+#
+quarkus.native.auto-service-loader-registration=false
+
+#
+# The docker image to use to do the image build
+#
+quarkus.native.builder-image=quay.io/quarkus/ubi-quarkus-native-image:19.2.1
+
+#
+# If the native image server should be restarted
+#
+quarkus.native.cleanup-server=false
+
+#
+# If this build should be done using a container runtime. If this is set docker will be used by default,
+# unless container-runtime is also set.
+#
+quarkus.native.container-build=false
+
+#
+# The container runtime (e.g. docker) that is used to do an image based build. If this is set then
+# a container build is always done.
+#
+quarkus.native.container-runtime=null
+
+#
+# Options to pass to the container runtime
+#
+quarkus.native.container-runtime-options=null
+
+#
+# If the native image build should wait for a debugger to be attached before running. This is an advanced option
+# and is generally only intended for those familiar with Substrate internals
+#
+quarkus.native.debug-build-process=false
+
+#
+# If debug symbols should be included
+#
+quarkus.native.debug-symbols=false
+
+#
+# If the bytecode of all proxies should be dumped for inspection
+#
+quarkus.native.dump-proxies=false
+
+#
+# If all security services should be added to the native image
+#
+quarkus.native.enable-all-security-services=false
+
+#
+# If a JVM based 'fallback image' should be created if native image fails. This is not recommended, as this is
+# functionally the same as just running the application in a JVM
+#
+quarkus.native.enable-fallback-images=false
+
+#
+# If the HTTP url handler should be enabled, allowing you to do URL.openConnection() for HTTP URLs
+#
+quarkus.native.enable-http-url-handler=true
+
+#
+# If the HTTPS url handler should be enabled, allowing you to do URL.openConnection() for HTTPS URLs
+#
+quarkus.native.enable-https-url-handler=false
+
+#
+# If isolates should be enabled
+#
+quarkus.native.enable-isolates=true
+
+#
+# If JNI should be enabled
+#
+quarkus.native.enable-jni=false
+
+#
+# If reporting on call paths should be enabled
+#
+quarkus.native.enable-reports=false
+
+#
+# If the native image server should be used. This can speed up compilation but can result in changes not always
+# being picked up due to cache invalidation not working 100%
+#
+quarkus.native.enable-server=false
+
+#
+# If the resulting image should allow VM introspection
+#
+quarkus.native.enable-vm-inspection=false
+
+#
+# If full stack traces are enabled in the resulting image
+#
+quarkus.native.full-stack-traces=true
+
+#
+# The location of the Graal distribution
+#
+quarkus.native.graalvm-home=${GRAALVM_HOME:}
+
+#
+# The location of the JDK
+#
+quarkus.native.java-home=${java.home}
+
+#
+# The default maximum old generation size of the native image
+#
+quarkus.native.native-image-xmx=null
+
+#
+# If the debug port should be published when building with docker and debug-build-process is true
+#
+quarkus.native.publish-debug-build-process-port=true
+
+#
+# If errors should be reported at runtime. This is a more relaxed setting, however it is not recommended as it means
+# your application may fail at runtime if an unsupported feature is used by accident.
+#
+quarkus.native.report-errors-at-runtime=false
+
+#
+# If exceptions should be reported with a full stack trace
+#
+quarkus.native.report-exception-stack-traces=true
+
+#
+# The entry point of the application. In most cases this should not be modified.
+#
+quarkus.package.main-class=io.quarkus.runner.GeneratedMain
+
+#
+# If the Implementation information should be included in the runner jar's MANIFEST.MF.
+#
+quarkus.package.manifest.add-implementation-entries=true
+
+#
+# The output folder in which to place the output, this is resolved relative to the build
+# systems target directory.
+#
+quarkus.package.output-directory=null
+
+#
+# The name of the final artifact
+#
+quarkus.package.output-name=null
+
+#
+# The suffix that is applied to the runner jar and native images
+#
+quarkus.package.runner-suffix=-runner
+
+#
+# The requested output type.
+#
+# The default built in types are jar and native
+#
+quarkus.package.type=jar
+
+#
+# If the java runner should be packed as an uberjar
+#
+quarkus.package.uber-jar=false
+
+#
+# Files that should not be copied to the output artifact
+#
+quarkus.package.user-configured-ignored-entries=null
+
+#
+# artifactId of the platform to use
+#
+quarkus.platform.artifact-id=quarkus-universe-bom
+
+#
+# groupId of the platform to use
+#
+quarkus.platform.group-id=io.quarkus
+
+#
+# version of the platform to use
+#
+quarkus.platform.version=999-SNAPSHOT
+
+#
+# Profile that will be active when Quarkus launches
+#
+quarkus.profile=prod
+
+#
+# If gzip is enabled
+#
+quarkus.resteasy.gzip.enabled=false
+
+#
+# Maximum deflated file bytes size
+#
+# If the limit is exceeded, Resteasy will return Response
+# with status 413("Request Entity Too Large")
+#
+quarkus.resteasy.gzip.max-input=10M
+
+#
+# Set this to override the default path for JAX-RS resources if there are no
+# annotated application classes.
+#
+quarkus.resteasy.path=/
+
+#
+# If this is true then JAX-RS will use only a single instance of a resource
+# class to service all requests.
+#
+# If this is false then it will create a new instance of the resource per
+# request.
+#
+# If the resource class has an explicit CDI scope annotation then the value of
+# this annotation will always be used to control the lifecycle of the resource
+# class.
+#
+# IMPLEMENTATION NOTE: 'javax.ws.rs.Path' turns into a CDI stereotype
+# with singleton scope. As a result, if a user annotates a JAX-RS resource with
+# a stereotype which has a different default scope the deployment fails with
+# IllegalStateException.
+#
+quarkus.resteasy.singleton-resources=true
+
+#
+# if set to true, access to all JAX-RS resources will be denied by default
+#
+quarkus.security.jaxrs.deny-unannotated-endpoints=false
+
+#
+# The relative path of the liveness health-checking servlet.
+#
+quarkus.smallrye-health.liveness-path=/live
+
+#
+# The relative path of the readiness health-checking servlet.
+#
+quarkus.smallrye-health.readiness-path=/ready
+
+#
+# Root path for health-checking servlets.
+#
+quarkus.smallrye-health.root-path=/health
+
+#
+# The path at which to register the OpenAPI Servlet.
+#
+quarkus.smallrye-openapi.path=/openapi
+
+#
+# Enable native SSL support.
+#
+quarkus.ssl.native=null
+
+#
+# If this should be included every time. By default this is only included when the application is running
+# in dev mode.
+#
+quarkus.swagger-ui.always-include=false
+
+#
+# The path where Swagger UI is available.
+#
+# The value `/` is not allowed as it blocks the application from serving anything else.
+#
+quarkus.swagger-ui.path=/swagger-ui
+
+#
+# The profile to use when testing the native image
+#
+quarkus.test.native-image-profile=prod
+
+#
+# Duration to wait for the native image to built during testing
+#
+quarkus.test.native-image-wait-time=PT5M
+
+#
+# The core thread pool size. This number of threads will always be kept alive.
+#
+quarkus.thread-pool.core-threads=1
+
+#
+# The executor growth resistance.
+#
+# A resistance factor applied after the core pool is full; values applied here will cause that fraction
+# of submissions to create new threads when no idle thread is available. A value of '0.0f' implies that
+# threads beyond the core size should be created as aggressively as threads within it; a value of '1.0f'
+# implies that threads beyond the core size should never be created.
+#
+quarkus.thread-pool.growth-resistance=0
+
+#
+# The amount of time a thread will stay alive with no work.
+#
+quarkus.thread-pool.keep-alive-time=30
+
+#
+# The maximum number of threads. If this is not specified then
+# it will be automatically sized to 8 * the number of available processors
+#
+quarkus.thread-pool.max-threads=null
+
+#
+# The queue size. For most applications this should be unbounded
+#
+quarkus.thread-pool.queue-size=null
+
+#
+# The frequency at which the status of the thread pool should be checked during shutdown. Information about
+# waiting tasks and threads will be checked and possibly logged at this interval. Setting this key to an empty
+# value disables the shutdown check interval.
+#
+quarkus.thread-pool.shutdown-check-interval=5
+
+#
+# The amount of time to wait for thread pool shutdown before tasks should be interrupted. If this value is
+# greater than or equal to the value for 'shutdown-timeout', then tasks will not be interrupted before
+# the shutdown timeout occurs.
+#
+quarkus.thread-pool.shutdown-interrupt=10
+
+#
+# The shutdown timeout. If all pending work has not been completed by this time
+# then additional threads will be spawned to attempt to finish any pending tasks, and the shutdown process will
+# continue
+#
+quarkus.thread-pool.shutdown-timeout=1M
+
+#
+# Enables or disables the Vert.x cache.
+#
+quarkus.vertx.caching=true
+
+#
+# Enables or disabled the Vert.x classpath resource resolver.
+#
+quarkus.vertx.classpath-resolving=true
+
+#
+# Enables or disables the clustering.
+#
+quarkus.vertx.cluster.clustered=false
+
+#
+# The host name.
+#
+quarkus.vertx.cluster.host=localhost
+
+#
+# The ping interval.
+#
+quarkus.vertx.cluster.ping-interval=20
+
+#
+# The ping reply interval.
+#
+quarkus.vertx.cluster.ping-reply-interval=20
+
+#
+# The port.
+#
+quarkus.vertx.cluster.port=null
+
+#
+# The public host name.
+#
+quarkus.vertx.cluster.public-host=null
+
+#
+# The public port.
+#
+quarkus.vertx.cluster.public-port=null
+
+#
+# The number of event loops. 2 x the number of core by default.
+#
+quarkus.vertx.event-loops-pool-size=null
+
+#
+# The accept backlog.
+#
+quarkus.vertx.eventbus.accept-backlog=null
+
+#
+# The client authentication.
+#
+quarkus.vertx.eventbus.client-auth=NONE
+
+#
+# The connect timeout.
+#
+quarkus.vertx.eventbus.connect-timeout=60
+
+#
+# The idle timeout in milliseconds.
+#
+quarkus.vertx.eventbus.idle-timeout=null
+
+#
+# Password of the key file.
+#
+quarkus.vertx.eventbus.key-certificate-jks.password=null
+
+#
+# Path of the key file (JKS format).
+#
+quarkus.vertx.eventbus.key-certificate-jks.path=null
+
+#
+# Comma-separated list of the path to the certificate files (Pem format).
+#
+quarkus.vertx.eventbus.key-certificate-pem.certs=null
+
+#
+# Comma-separated list of the path to the key files (Pem format).
+#
+quarkus.vertx.eventbus.key-certificate-pem.keys=null
+
+#
+# Password of the key.
+#
+quarkus.vertx.eventbus.key-certificate-pfx.password=null
+
+#
+# Path to the key file (PFX format)
+#
+quarkus.vertx.eventbus.key-certificate-pfx.path=null
+
+#
+# The receive buffer size.
+#
+quarkus.vertx.eventbus.receive-buffer-size=null
+
+#
+# The number of reconnection attempts.
+#
+quarkus.vertx.eventbus.reconnect-attempts=0
+
+#
+# The reconnection interval in milliseconds.
+#
+quarkus.vertx.eventbus.reconnect-interval=1
+
+#
+# Whether or not to reuse the address.
+#
+quarkus.vertx.eventbus.reuse-address=true
+
+#
+# Whether or not to reuse the port.
+#
+quarkus.vertx.eventbus.reuse-port=false
+
+#
+# The send buffer size.
+#
+quarkus.vertx.eventbus.send-buffer-size=null
+
+#
+# The so linger.
+#
+quarkus.vertx.eventbus.soLinger=null
+
+#
+# Enables or Disabled SSL.
+#
+quarkus.vertx.eventbus.ssl=false
+
+#
+# Whether or not to keep the TCP connection opened (keep-alive).
+#
+quarkus.vertx.eventbus.tcp-keep-alive=false
+
+#
+# Configure the TCP no delay.
+#
+quarkus.vertx.eventbus.tcp-no-delay=true
+
+#
+# Configure the traffic class.
+#
+quarkus.vertx.eventbus.traffic-class=null
+
+#
+# Enables or disables the trust all parameter.
+#
+quarkus.vertx.eventbus.trust-all=false
+
+#
+# Password of the key file.
+#
+quarkus.vertx.eventbus.trust-certificate-jks.password=null
+
+#
+# Path of the key file (JKS format).
+#
+quarkus.vertx.eventbus.trust-certificate-jks.path=null
+
+#
+# Comma-separated list of the trust certificate files (Pem format).
+#
+quarkus.vertx.eventbus.trust-certificate-pem.certs=null
+
+#
+# Password of the key.
+#
+quarkus.vertx.eventbus.trust-certificate-pfx.password=null
+
+#
+# Path to the key file (PFX format)
+#
+quarkus.vertx.eventbus.trust-certificate-pfx.path=null
+
+#
+# The size of the internal thread pool (used for the file system).
+#
+quarkus.vertx.internal-blocking-pool-size=20
+
+#
+# The maximum amount of time the event loop can be blocked.
+# Default is 2s.
+#
+quarkus.vertx.max-event-loop-execute-time=null
+
+#
+# The maximum amount of time the worker thread can be blocked.
+# Default is 10s.
+#
+quarkus.vertx.max-worker-execute-time=null
+
+#
+# Enables the async DNS resolver.
+#
+quarkus.vertx.use-async-dns=false
+
+#
+# The amount of time before a warning is displayed if the event loop is blocked.
+#
+quarkus.vertx.warning-exception-time=2
+
+#
+# The size of the worker thread pool.
+#
+quarkus.vertx.worker-pool-size=20

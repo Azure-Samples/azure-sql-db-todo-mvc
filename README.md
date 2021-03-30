@@ -1,41 +1,37 @@
 # DRAFT UNDER CONSTRUCTION
 
 # OpenShift Examples - ARO WebApp with Azure SQL
-
-![License](https://img.shields.io/badge/license-MIT-green.svg)
-
-This is a fork and repurpose of an Azure [ToDoMVC](http://todomvc.com/) app in order to demonstrate the use of Azure Red Hat OpenShift.
-
-The implementation uses
-- [Vue.Js](https://vuejs.org/) as front-end client
-- [NodeJS](https://nodejs.org/en/) for the back-end logic
-- [Azure SQL](https://azure.microsoft.com/en-us/services/sql-database/) as database to store ToDo data
-- [GitHub Actions](https://github.com/features/actions)
-- [JBoss EAP](https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.3/html/getting_started_with_jboss_eap_for_openshift_container_platform/introduction) as an example of running a traditional Java app server containerized
- 
+A demo reference to deploying webapps in Azure Red Hat OpenShift that talk to Azure SQL. 
 ## Implementation Details
 
-Folder structure
+Folder structure:
 
-- `/api`: the NodeJs code used to provide the backend API, called by the Vue.Js client
-- `/client`: the Vue.Js client. Original source code has been taken from official Vue.js sample and adapted to call a REST client instead of using local storage in order to save and retrieve todos
-- `/traditional-appserver`: the config and code for the traditional app server.
-- `/database`: the T-SQL script needed to setup the object in the Azure SQL database. Take a look at the Stored Procedure to see how you can handle JSON right on Azure SQL
-
-## Setup Database
-
-Execute the `/database/create.sql` script on a database of your choice. Could be a local SQL Server or an Azure SQL running in the cloud. Just make sure the desired database is reachable by your local machine (eg: firewall, authentication and so on), then use SQL Server Management Studio or Azure Data Studio to run the script. 
-
-Of course if you want to deploy the solution on Azure, use Azure SQL.
-
-If you need any help in executing the SQL script on Azure SQL, you can find a Quickstart here: [Use Azure Data Studio to connect and query Azure SQL database](https://docs.microsoft.com/en-us/sql/azure-data-studio/quickstart-sql-database).
-
-If you need to create an Azure SQL database from scratch, an Azure SQL S0 database would be more than fine to run the tests.
+- `/modern-app`: a modern backend API (supporting OpenAPI) and a webpacked frontend UI
+- `/traditional-appserver`: the config and code for the traditional app server
+- `/database`: the scripts needed to setup the Azure SQL database
+- `/caching`: how to setup a caching service running in ARO
+  
+## Setup Databases
+```
+az cosmosdb mongodb mongodb database create -g <resource-group> -a <account-name> -n highscores
+```
 
 ```
 az sql db create -g <resource-group> -s <server-name> -n resiliency_test --service-objective S0
 ```
 
-Remember that if you don't have Linux environment where you can run [AZ CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) you can always use the [Cloud Shell](https://docs.microsoft.com/en-us/azure/cloud-shell/quickstart). If you prefer to do everything via the portal, here's a tutorial: [Create an Azure SQL Database single database](https://docs.microsoft.com/en-us/azure/azure-sql/database/single-database-create-quickstart?tabs=azure-portal).
+Execute the `/database/create-todos.sql` script on a database of your choice. Could be a local SQL Server or an Azure SQL running in the cloud. Just make sure the desired database is reachable by your local machine (eg: firewall, authentication and so on), then use SQL Server Management Studio or Azure Data Studio to run the script. 
+
+If you need any help in executing the SQL script on Azure SQL, you can find a Quickstart here: [Use Azure Data Studio to connect and query Azure SQL database](https://docs.microsoft.com/en-us/sql/azure-data-studio/quickstart-sql-database).
+
+If you prefer to do everything via the portal, here's a tutorial: [Create an Azure SQL Database single database](https://docs.microsoft.com/en-us/azure/azure-sql/database/single-database-create-quickstart?tabs=azure-portal).
 
 If you are completely new to Azure SQL, no worries! Here's a full playlist that will help you: [Azure SQL for beginners](https://www.youtube.com/playlist?list=PLlrxD0HtieHi5c9-i_Dnxw9vxBY-TqaeN).
+
+## Deploy Apps
+1. If you haven't already, in your Azure account [create an ARO cluster](https://docs.microsoft.com/en-us/azure/openshift/tutorial-create-cluster)
+2. If you haven't already, clone this github repo to your local machine (this is so you can tweak things before you deploy)
+3. Login to ARO and create a new project to deploy this example (you can do via webconsole or CLI:`oc new-project`)
+4. TBD - Deploy modern app
+5. TBD - Deploy traditional app
+6. Goto the ARO webconsole and play around with the apps
