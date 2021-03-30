@@ -12,23 +12,18 @@ Folder structure:
 - `/caching`: how to setup a caching service running in ARO
   
 ## Setup Databases
-Assuming you have CLI access to your Azure account. Run the following commands to create a couple new databases:
+Assuming you have CLI access to your Azure account. Run the following commands to create a our databases for this example:
 
-```
-az cosmosdb mongodb database create -g <resource-group> -a <account-name> -n highscores
-```
+1. Check the script in database/setupAzureSql.sh and tweak as desired
+2. Run `./database/setupAzureSql.sh`
 
-```
-az sql db create -g <resource-group> -s <server-name> -n resiliency_test --service-objective S0
-```
+1. Check the script in database/setupCosmos.sh and tweak as desired
+2. Run `./database/setupCosmos.sh`
+3. Note the connection strings that are printed - you'll need the primary one later
 
-Now execute the `/database/create-todos.sql` script on your Azure SQL running in the cloud. Make sure the desired database is reachable by your local machine (eg: firewall, authentication and so on), then use SQL Server Management Studio or Azure Data Studio to run the script. 
+1. Now execute the `/database/create-todos.sql` script on your Azure SQL (use SQL Server Management Studio or Azure Data Studio to run the script)
 
-If you need any help in executing the SQL script on Azure SQL, you can find a Quickstart here: [Use Azure Data Studio to connect and query Azure SQL database](https://docs.microsoft.com/en-us/sql/azure-data-studio/quickstart-sql-database).
-
-If you prefer to do everything via the portal, here's a tutorial: [Create an Azure SQL Database single database](https://docs.microsoft.com/en-us/azure/azure-sql/database/single-database-create-quickstart?tabs=azure-portal).
-
-If you are completely new to Azure SQL, no worries! Here's a full playlist that will help you: [Azure SQL for beginners](https://www.youtube.com/playlist?list=PLlrxD0HtieHi5c9-i_Dnxw9vxBY-TqaeN).
+If you are completely new to Azure SQL and need a little more help, here's a full playlist that will help you: [Azure SQL for beginners](https://www.youtube.com/playlist?list=PLlrxD0HtieHi5c9-i_Dnxw9vxBY-TqaeN).
 
 ## Deploy Apps
 1. If you haven't already, in your Azure account [create an ARO cluster](https://docs.microsoft.com/en-us/azure/openshift/tutorial-create-cluster)
