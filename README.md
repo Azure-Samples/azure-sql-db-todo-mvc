@@ -3,7 +3,8 @@
 # OpenShift Examples - ARO WebApp with Azure SQL
 A demo of deploying highly available webapps in Azure Red Hat OpenShift (ARO) that talk to cloud databases (Azure Cosmos DB & Azure SQL).
 
-**PLEASE BE AWARE** that ARO + Azure SQL + Cosmos DB all running in HA mode can create large costs on your Azure bill.
+**PLEASE BE AWARE** that ARO + Azure SQL + Cosmos DB running in HA mode is closer to production Azure costs than a typical example's "Hello World" level of costs.
+
 
 This example is based on the solution architecture diagram below:
 ![Diagram](.diagrams/HA-webapps-ARO-SQL.png)
