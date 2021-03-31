@@ -1,6 +1,4 @@
-# UNDER CONSTRUCTION - THIS ISN'T COMPLETE YET
-For now please use the dotnet example for a traditional app server
-
+# DRAFT UNDER CONSTRUCTION
 # Traditional Java App Server using JBossEAP
 Another example of running a JavaEE/JakartaEE monolithic app with an Azure SQL backend
 

@@ -1,7 +1,5 @@
 # Traditional ASP.NET Core App
-This is a Red Hat demo example app that uses a containerized database in ARO.
-
-(If you want to see Azure SQL in action choose on of the other traditional app examples)
+This is a Red Hat demo example app. It initially deploys a containerized PostgreSQL database and in the example steps below we walk through switching that to an Azure SQL Postgres database.
 
 ## How to deploy using the CLI
 1. Make sure you are in the right project: `oc project`
@@ -12,6 +10,11 @@ This is a Red Hat demo example app that uses a containerized database in ARO.
 6. Goto the ARO dashboard and check it out
 
 ## Mapping the monolith to persistent storage using a PVC
-A typical challenge with adopting containers is that containers only provide ephemeral storage - you can see in this case our databasse is leveraging that capability. See some details in the webconsole or with the following commands:
-1. `oc describe pvc postgres` to see the claim that the Postgres requested
+A typical challenge with adopting containers is that containers only provide ephemeral storage - you can see in this case our containerized databasse is leveraging that capability. See some details in the webconsole or with the following commands:
+1. `oc describe pvc postgres` to see the claim that the PostgreSQL requested
 2. `oc describe pv` to see all the volumes that have been provisioned for requests (including the one for postgres)
+
+## Switching the Azure SQL for Postgres
+Having a containerized database is great for dev and testing scenarios but can be a lot of work to self-manage in production. So these steps walk through switching the database from the containerized deployment to a [Postgres running in Azure SQL](https://azure.microsoft.com/en-us/services/postgresql/).
+
+1. Steps TBD

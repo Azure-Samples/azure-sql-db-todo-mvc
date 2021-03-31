@@ -1,5 +1,3 @@
-# DRAFT UNDER CONSTRUCTION
-
 # OpenShift Examples - ARO WebApp with Azure SQL
 A demo of deploying highly available webapps in Azure Red Hat OpenShift (ARO) that talk to cloud databases (Azure Cosmos DB & Azure SQL).
 
