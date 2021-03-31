@@ -18,26 +18,37 @@ Folder structure:
 - `/database`: the scripts needed to setup the Azure SQL database
 - `/caching`: how to setup a caching service running in ARO
 
+## Prerequisites
+1. If you haven't already, in your Azure account [create an ARO cluster](https://docs.microsoft.com/en-us/azure/openshift/tutorial-create-cluster)
+2. If you haven't already, clone this github repo to your local machine (this is so you can tweak things before you deploy)
+3. Make sure you have the latest .NET image streams installed to your ARO cluster
+   - `oc describe is dotnet -n openshift`
+   - if not found, do this: `oc create -f https://raw.githubusercontent.com/redhat-developer/s2i-dotnetcore/master/dotnet_imagestreams.json -n openshift`
+   - if old, do this: `oc replace -f https://raw.githubusercontent.com/redhat-developer/s2i-dotnetcore/master/dotnet_imagestreams.json -n openshift`
+
 ## Setup Databases
 Assuming you have CLI access to your Azure account. Run the following commands to create a our databases for this example:
 
-1. Check the script in database/setupAzureSql.sh and tweak as desired
+1. Check the script in `database/setupAzureSql.sh` and tweak as desired
 2. Run `./database/setupAzureSql.sh`
 
-3. Check the script in database/setupCosmos.sh and tweak as desired
+3. Check the script in `database/setupCosmos.sh` and tweak as desired
 4. Run `./database/setupCosmos.sh`
 5. Note the connection strings that are printed - you'll need the primary one later
 
 If you are completely new to Azure SQL and need a little more help, here's a full playlist that will help you: [Azure SQL for beginners](https://www.youtube.com/playlist?list=PLlrxD0HtieHi5c9-i_Dnxw9vxBY-TqaeN).
 
+
 ## Deploy Apps
-1. If you haven't already, in your Azure account [create an ARO cluster](https://docs.microsoft.com/en-us/azure/openshift/tutorial-create-cluster)
-2. If you haven't already, clone this github repo to your local machine (this is so you can tweak things before you deploy)
-3. Login to ARO and create a new project to deploy this example (you can do via webconsole or CLI:`oc new-project`)
-4. Follow steps to deploy the modern-webapp-api service
-5. Follow steps to deploy the modern-webapp-ui app
-6. Follow steps to deploy one of the traditional monolithic apps
-7. Goto the ARO webconsole and check it all out
+1. Login to ARO and create a new project to deploy this example (you can do via webconsole or CLI:`oc new-project`)
+2. Follow steps to deploy the `./modern-webapp/api` service
+3. Follow steps to deploy the `./modern-webapp/ui` app
+4. Follow steps to deploy one of the `./traditional-appserver` monolithic apps
+5. Goto the ARO webconsole and check it all out
+
+## Clean up when done
+1. Delete the project you're working in `oc delete project PROJ-NAME`
+2. Delete the databases `./database/deleteDatabases.sh` (which deletes their resource group and everything in it)
 
 ## This is a lot of manual steps
 Yes, sorry. But it is intentional - I wanted to walk you through everything to help you understand all the parts. I'm planning on another example to show how you can automate all of these steps with CI/CD. If you want a sneak peak on how that could work [read this blog post](https://developers.redhat.com/blog/2020/09/03/the-present-and-future-of-ci-cd-with-gitops-on-red-hat-openshift/).
