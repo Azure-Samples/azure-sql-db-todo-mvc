@@ -13,7 +13,8 @@ First, install the operator that will manage our caching service
 
 Next, tell the operator to create a new cache service instance 
 This is the YAML for a basic cache service. You can create it via CLI or webconsole.
-``` apiVersion: infinispan.org/v1
+```
+apiVersion: infinispan.org/v1
 kind: Infinispan
 metadata:
   name: example-infinispan
@@ -27,6 +28,9 @@ spec:
 2. Click the + and paste it in or `oc apply -f ` it.
 3. Check the pods in the webconsole or `oc get pods -w` to see when it's up and running
 
+
+## Hooking the apps up to use caching
+Find details on how to do this in the following guides.
 
 ## More guidance
 * https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.1/html/running_data_grid_on_openshift/index

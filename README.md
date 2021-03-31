@@ -45,8 +45,8 @@ If you are completely new to Azure SQL and need a little more help, here's a ful
 5. Goto the ARO webconsole and check it all out
 
 ## Clean up when done
-1. Delete the project you're working in `oc delete project PROJ-NAME`
-2. Delete the databases `./database/deleteDatabases.sh` (which deletes their resource group and everything in it)
+1. Delete the project you're working in ARO `oc delete project PROJ-NAME`
+2. Delete the database's Azure Resource Group `./database/deleteDatabases.sh`
 
 ## This is a lot of manual steps
 Yes, sorry. But it is intentional - I wanted to walk you through everything to help you understand all the parts. I'm planning on another example to show how you can automate all of these steps with CI/CD. If you want a sneak peak on how that could work [read this blog post](https://developers.redhat.com/blog/2020/09/03/the-present-and-future-of-ci-cd-with-gitops-on-red-hat-openshift/).
