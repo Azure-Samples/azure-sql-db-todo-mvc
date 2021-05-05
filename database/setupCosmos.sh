@@ -5,8 +5,6 @@
 # Create a MongoDB API database and collection
 #
 #
-resource="rg-AroWebAppsExample"
-
 uniqueId=$RANDOM
 resource="rg-AroWebAppsExample"
 location="East US"
