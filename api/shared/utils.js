@@ -7,7 +7,7 @@ var TYPES = require('tedious').TYPES;
 const executeSQL = (context, verb, payload) => {
     var result = "";    
     const paramPayload = (payload != null) ? JSON.stringify(payload) : '';
-    context.log(payload);
+    //context.log(payload);
 
     const connection = new Connection({
         server: process.env["db_server"],
