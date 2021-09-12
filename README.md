@@ -76,17 +76,20 @@ Now use the `/api/.env.template` file to create an `.env` file and add the corre
 
 Details on how to run Azure Static WebApps locally can be found here:
 
-[Set up local development for Azure Static Web Apps Preview](https://docs.microsoft.com/en-us/azure/static-web-apps/local-development)
+[Set up local development for Azure Static Web Apps](https://docs.microsoft.com/en-us/azure/static-web-apps/local-development)
 
-Long story short (make sure you have installed all the prerequisites mentioned in the link above):
-- Run Azure Function from within Visual Studio Code (just hit F5 on the `/api` folder)
-- Serve `/client/index.html` using Visual Studio Code Live Server
+Long story short:
+
+- Install the Azure Static Web Apps CLI: `npm install -g @azure/static-web-apps-cli`
+- From the root folder run: `swa start --api ./api`
+
+Easy, right?
 
 ## Running on Azure
 
 This is the amazing part of using Azure Static WebApps. Deploying to Azure is completely automated via GitHub actions.
 
-1. Fork this repository 
+1. Fork this repository
 1. Open the Azure Portal
 1. Create a "Static Web App" resource and follow the instruction here: [Building your first static web app in the Azure portal](https://docs.microsoft.com/en-us/azure/static-web-apps/get-started-portal?tabs=vanilla-javascript), but:  
    - When asked for GitHub repo details, point to the forked repo you just created
@@ -102,6 +105,6 @@ This is the amazing part of using Azure Static WebApps. Deploying to Azure is co
 1. Go to the "Configuration" tab and add the same key and values that you have in your `.env` file you created earlier for local execution.
 1. Go to "Overview" and click on "Browse" to open your website. Done!
 
-### Azure Static Web App Preview 
+### Azure Static Web App Free Tier
 
-Azure Static Web App are in Preview and at the moment only support a Free tier...which is absolutely great so that you can try them for free, but of course don't expect great performances. REST API response will be in the 500 msec area. Keep this in mind if you are planning to use them for something different than testing. If you need better performance right now and cannot when for when Azure Static Web App will be out of preview, you can always deploy the REST API using plain Azure Functions where you can have amazing scalability and performance.
+Azure Static Web App support a Free tier...which is absolutely great so that you can try them for free, but of course don't expect great performances. REST API response will be in the 500 msec area. Keep this in mind if you are planning to use them for something different than testing. If you need better performance right now and cannot when for when Azure Static Web App will be out of preview, you can always deploy the REST API using plain Azure Functions where you can have amazing scalability and performance.
