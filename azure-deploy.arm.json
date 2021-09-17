@@ -23,9 +23,19 @@
             "apiLocation": {
                 "type": "string"
             },
-            "azureSQL": {
+            "db_server": {
                 "type": "string"
+            },
+            "db_user": {
+                "type": "securestring"
+            },
+            "db_password": {
+                "type": "securestring"
+            },
+            "db_database": {
+                "type": "securestring"
             }
+
         },
         "resources": [
             {
@@ -53,7 +63,10 @@
                         "type": "config",
                         "location": "[parameters('location')]",
                         "properties": {
-                            "DATABASE_URL": "[parameters('azureSQL')]"                            
+                            "db_server": "[parameters('db_server')]",
+                            "db_user": "[parameters('db_server')]",
+                            "db_password": "[parameters('db_server')]",
+                            "db_database": "[parameters('db_server')]"
                         },
                         "dependsOn": [
                             "[resourceId('Microsoft.Web/staticSites', parameters('name'))]"

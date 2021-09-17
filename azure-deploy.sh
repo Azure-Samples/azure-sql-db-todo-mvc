@@ -5,15 +5,14 @@ set -euo pipefail
 FILE=".env"
 if [[ -f $FILE ]]; then
 	echo "Loading from $FILE" 
-    export $(egrep . $FILE | xargs -n1)
+    export $(egrep "^[^#;]" $FILE | xargs -n1)
 else
 	cat << EOF > .env
 resourceGroup=""
 appName=""
 location=""
 
-# Change this if you are using your own github repository
-gitSource="https://github.com/Azure-Samples/azure-sql-db-prisma.git"
+gitSource="https://github.com/Azure-Samples/azure-sql-db-todo-mvc.git"
 gitToken=""
 EOF
 	echo "Enviroment file not detected."
@@ -24,7 +23,7 @@ fi
 
 FILE="./api/.env"
 echo "Loading from $FILE" 
-export $(egrep . $FILE | xargs -n1)
+export $(egrep "^[^#;]" $FILE | xargs -n1)
 
 echo "Creating Resource Group...";
 az group create \
@@ -44,7 +43,10 @@ az deployment group create \
     branch=main \
     appLocation="./client" \
     apiLocation="./api" \
-    azureSQL=$DATABASE_URL 
+    db_server=$db_server \
+    db_user=$db_user \
+    db_password=$db_password \
+    db_database=$db_database
 
 echo "Getting Static Web App...";
 dhn=`az staticwebapp show -g $resourceGroup -n $appName --query "defaultHostname"`
