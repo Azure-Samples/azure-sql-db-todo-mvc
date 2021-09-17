@@ -43,7 +43,7 @@ The implementation uses
 
 ## Implementation Details
 
-Folder structure
+Folder structure is the following:
 
 - `/api`: the NodeJs Azure Function code used to provide the backend API, called by the Vue.Js client
 - `/client`: the Vue.Js client. Original source code has been taken from official Vue.js sample and adapted to call a REST client instead of using local storage in order to save and retrieve todos
@@ -53,7 +53,7 @@ More details are available in this blog post: [TodoMVC Full Stack with Azure Sta
 
 ## Setup Database
 
-Execute the `/database/create.sql` script on a database of your choice. Could be a local SQL Server or an Azure SQL running in the cloud. Just make sure the desired database is reachable by your local machine (eg: firewall, authentication and so on), then use SQL Server Management Studio or Azure Data Studio to run the script. 
+Execute the `/database/create.sql` script on a database of your choice. Could be a local SQL Server or an Azure SQL running in the cloud. Just make sure the desired database is reachable by your local machine (eg: firewall, authentication and so on), then use SQL Server Management Studio or Azure Data Studio to run the script.
 
 Of course if you want to deploy the solution on Azure, use Azure SQL.
 
@@ -68,7 +68,6 @@ az sql db create -g <resource-group> -s <server-name> -n resiliency_test --servi
 Remember that if you don't have Linux environment where you can run [AZ CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) you can always use the [Cloud Shell](https://docs.microsoft.com/en-us/azure/cloud-shell/quickstart). If you prefer to do everything via the portal, here's a tutorial: [Create an Azure SQL Database single database](https://docs.microsoft.com/en-us/azure/azure-sql/database/single-database-create-quickstart?tabs=azure-portal).
 
 If you are completely new to Azure SQL, no worries! Here's a full playlist that will help you: [Azure SQL for beginners](https://www.youtube.com/playlist?list=PLlrxD0HtieHi5c9-i_Dnxw9vxBY-TqaeN).
-
 
 ## Running local
 
@@ -87,23 +86,14 @@ Easy, right?
 
 ## Running on Azure
 
-This is the amazing part of using Azure Static WebApps. Deploying to Azure is completely automated via GitHub actions.
+This is the amazing part of using Azure Static Web Apps. Deploying to Azure is completely automated via GitHub actions. There are some manual steps because the Static Web Apps CLI is still in Preview at the moment of writing and because Prisma and the Azure Static Web App GitHub Action need some help the get along.
 
 1. Fork this repository
-1. Open the Azure Portal
-1. Create a "Static Web App" resource and follow the instruction here: [Building your first static web app in the Azure portal](https://docs.microsoft.com/en-us/azure/static-web-apps/get-started-portal?tabs=vanilla-javascript), but:  
-   - When asked for GitHub repo details, point to the forked repo you just created
-   - Select "main" as branch
-   - Select "Custom" in the "Build Presets" dropdown
-   - Set `client` as "App location"
-1. Wait for resource creation and GitHub action completion. Once the resource is ready, click on "Go to Resource".
-1. Be patient, now GitHub Action will kick in and deploy the full-stack website. It will take a couple of minutes.
-1. Relax.
-1. Grab some coffee or tea.
-1. Drink it.
-1. Click on "Functions" and you should be able to see the `todo` function listed.
-1. Go to the "Configuration" tab and add the same key and values that you have in your `.env` file you created earlier for local execution.
-1. Go to "Overview" and click on "Browse" to open your website. Done!
+1. Get a [GitHub Token](https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line)
+1. Run `./azure-deploy.sh`. Please note that if this is the first time you run it, it will create an `.env` file in the root folder. Fill the `.env` file. Run the `./azure-deploy.sh` again.
+1. Once the deployment is done go to the Azure portal, and open the Azure Static Web App resource just created.
+1. Open the "Configuration" pane and add a new environment variable named `DATABASE_URL` and assign the value of the database connection string mentioned before in the local development section.
+1. Done! Well, not really, read next.
 
 ### Azure Static Web App Free Tier
 
