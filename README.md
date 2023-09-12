@@ -11,7 +11,7 @@ products:
 - vs-code
 - azure-sql-database
 - azure-functions
-- azure-web-apps
+- azure-app-service
 description: "TodoMVC Sample app Full Stack implementation using Azure Static WebApps, Azure Functions, Node, Vue.Js and Azure SQL (full JSON support)"
 urlFragment: "azure-sql-db-todo-mvc"
 ---
