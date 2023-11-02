@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "dotenv": "^8.2.0",
-    "tedious": "^9.0.1"
+    "tedious": "^9.2.3"
   },
   "devDependencies": {}
 }
